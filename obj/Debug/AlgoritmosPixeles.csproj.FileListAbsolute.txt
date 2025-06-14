@@ -1,0 +1,13 @@
+C:\Users\rouss\source\repos\AlgoritmosPixeles\bin\Debug\AlgoritmosPixeles.exe.config
+C:\Users\rouss\source\repos\AlgoritmosPixeles\bin\Debug\AlgoritmosPixeles.exe
+C:\Users\rouss\source\repos\AlgoritmosPixeles\bin\Debug\AlgoritmosPixeles.pdb
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.csproj.AssemblyReference.cache
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.Properties.Resources.resources
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.csproj.GenerateResource.cache
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.csproj.CoreCompileInputs.cache
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.exe
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.pdb
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.FrmLineas.resources
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.FrmHome.resources
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.FrmCircunferencia.resources
+C:\Users\rouss\source\repos\AlgoritmosPixeles\obj\Debug\AlgoritmosPixeles.FrmRelleno.resources
