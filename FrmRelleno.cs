@@ -26,8 +26,10 @@ namespace AlgoritmosPixeles
         private void FrmRelleno_Load(object sender, EventArgs e)
         {
             mLinea.InitializeComponents(picCanvas);
+            mRelleno.InitializeData(pointsTable);
             canvas = new Bitmap(picCanvas.Width, picCanvas.Height);
             mode = "";
+            lblSpeed.Text = "x" + tcbSpeed.Value.ToString();
         }
 
         private void picCanvas_Click(object sender, EventArgs e)
@@ -40,7 +42,7 @@ namespace AlgoritmosPixeles
             else
             {
                 mRelleno.getStartPoint(ev.Location);
-                mRelleno.fillShape(picCanvas,canvas);
+                mRelleno.fillShape(picCanvas,canvas, pointsTable);
             }
         }
 
@@ -52,6 +54,12 @@ namespace AlgoritmosPixeles
         private void btnFill_Click(object sender, EventArgs e)
         {
             mode = "fill";
+        }
+
+        private void tcbSpeed_Scroll(object sender, EventArgs e)
+        {
+            lblSpeed.Text = "x" + tcbSpeed.Value.ToString();
+            mRelleno.getAnimationSpeed(tcbSpeed);
         }
     }
 }

@@ -13,7 +13,6 @@ namespace AlgoritmosPixeles
     public partial class FrmCircunferencia : Form
     {
         private DiscreteCircle dCircle=new DiscreteCircle();
-        private RellenoInundado fFill=new RellenoInundado();
         public FrmCircunferencia()
         {
             InitializeComponent();
@@ -21,23 +20,32 @@ namespace AlgoritmosPixeles
 
         private void FrmCircunferencia_Load(object sender, EventArgs e)
         {
-            dCircle.initializeData(txtPx,txtPy,txtRadius,picCanvas);
+            dCircle.initializeData(txtPx,txtPy,txtRadius,picCanvas,tablePoints);
+            lblSpeed.Text = "x" + tckSpeed.Value.ToString();
+            dCircle.getAnimationSpeed(tckSpeed);
         }
 
         private void btnDraw_Click(object sender, EventArgs e)
         {
+            dCircle.getAnimationSpeed(tckSpeed);
             dCircle.readData(txtPx,txtPy,txtRadius);
-            dCircle.calculateOctant(picCanvas);
+            dCircle.calculateOctant(picCanvas,tablePoints);
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-            dCircle.initializeData(txtPx, txtPy, txtRadius, picCanvas);
+            dCircle.initializeData(txtPx, txtPy, txtRadius, picCanvas, tablePoints);
         }
 
         private void picCanvas_Click(object sender, EventArgs e)
         {
-            //Aqui iria el relleno
+            
+        }
+
+        private void tckSpeed_Scroll(object sender, EventArgs e)
+        {
+            lblSpeed.Text = "x" + tckSpeed.Value.ToString();
+            dCircle.getAnimationSpeed(tckSpeed);
         }
     }
 }

@@ -40,9 +40,16 @@
             this.btnDraw = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.picCanvas = new System.Windows.Forms.PictureBox();
+            this.tablePoints = new System.Windows.Forms.DataGridView();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.tckSpeed = new System.Windows.Forms.TrackBar();
+            this.lblSpeed = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePoints)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tckSpeed)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -56,7 +63,7 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(291, 251);
+            this.groupBox1.Size = new System.Drawing.Size(291, 197);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos";
@@ -64,7 +71,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(43, 176);
+            this.label4.Location = new System.Drawing.Point(43, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 20);
             this.label4.TabIndex = 12;
@@ -72,7 +79,7 @@
             // 
             // txtRadius
             // 
-            this.txtRadius.Location = new System.Drawing.Point(104, 173);
+            this.txtRadius.Location = new System.Drawing.Point(104, 158);
             this.txtRadius.Name = "txtRadius";
             this.txtRadius.Size = new System.Drawing.Size(100, 26);
             this.txtRadius.TabIndex = 11;
@@ -80,7 +87,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(43, 127);
+            this.label3.Location = new System.Drawing.Point(43, 112);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(24, 20);
             this.label3.TabIndex = 10;
@@ -89,7 +96,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 80);
+            this.label2.Location = new System.Drawing.Point(43, 65);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(24, 20);
             this.label2.TabIndex = 9;
@@ -97,14 +104,14 @@
             // 
             // txtPy
             // 
-            this.txtPy.Location = new System.Drawing.Point(76, 127);
+            this.txtPy.Location = new System.Drawing.Point(76, 112);
             this.txtPy.Name = "txtPy";
             this.txtPy.Size = new System.Drawing.Size(100, 26);
             this.txtPy.TabIndex = 8;
             // 
             // txtPx
             // 
-            this.txtPx.Location = new System.Drawing.Point(76, 77);
+            this.txtPx.Location = new System.Drawing.Point(76, 62);
             this.txtPx.Name = "txtPx";
             this.txtPx.Size = new System.Drawing.Size(100, 26);
             this.txtPx.TabIndex = 7;
@@ -122,9 +129,9 @@
             // 
             this.groupBox2.Controls.Add(this.btnDraw);
             this.groupBox2.Controls.Add(this.btnClear);
-            this.groupBox2.Location = new System.Drawing.Point(12, 290);
+            this.groupBox2.Location = new System.Drawing.Point(12, 225);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(291, 184);
+            this.groupBox2.Size = new System.Drawing.Size(291, 148);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Controles";
@@ -154,17 +161,61 @@
             this.picCanvas.BackColor = System.Drawing.Color.White;
             this.picCanvas.Location = new System.Drawing.Point(309, 12);
             this.picCanvas.Name = "picCanvas";
-            this.picCanvas.Size = new System.Drawing.Size(830, 473);
+            this.picCanvas.Size = new System.Drawing.Size(587, 473);
             this.picCanvas.TabIndex = 2;
             this.picCanvas.TabStop = false;
             this.picCanvas.Click += new System.EventHandler(this.picCanvas_Click);
+            // 
+            // tablePoints
+            // 
+            this.tablePoints.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.tablePoints.Location = new System.Drawing.Point(903, 13);
+            this.tablePoints.Name = "tablePoints";
+            this.tablePoints.RowHeadersVisible = false;
+            this.tablePoints.RowHeadersWidth = 62;
+            this.tablePoints.RowTemplate.Height = 28;
+            this.tablePoints.Size = new System.Drawing.Size(341, 472);
+            this.tablePoints.TabIndex = 3;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.lblSpeed);
+            this.groupBox3.Controls.Add(this.tckSpeed);
+            this.groupBox3.Location = new System.Drawing.Point(12, 379);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(278, 100);
+            this.groupBox3.TabIndex = 15;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Velocidad de la animacion";
+            // 
+            // tckSpeed
+            // 
+            this.tckSpeed.Location = new System.Drawing.Point(17, 25);
+            this.tckSpeed.Minimum = 1;
+            this.tckSpeed.Name = "tckSpeed";
+            this.tckSpeed.Size = new System.Drawing.Size(187, 69);
+            this.tckSpeed.TabIndex = 16;
+            this.tckSpeed.Value = 1;
+            this.tckSpeed.Scroll += new System.EventHandler(this.tckSpeed_Scroll);
+            // 
+            // lblSpeed
+            // 
+            this.lblSpeed.AutoSize = true;
+            this.lblSpeed.Location = new System.Drawing.Point(229, 40);
+            this.lblSpeed.Name = "lblSpeed";
+            this.lblSpeed.Size = new System.Drawing.Size(16, 20);
+            this.lblSpeed.TabIndex = 18;
+            this.lblSpeed.Text = "x";
+            this.lblSpeed.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // FrmCircunferencia
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ClientSize = new System.Drawing.Size(1151, 497);
+            this.ClientSize = new System.Drawing.Size(1256, 497);
+            this.Controls.Add(this.groupBox3);
+            this.Controls.Add(this.tablePoints);
             this.Controls.Add(this.picCanvas);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -175,6 +226,10 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePoints)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tckSpeed)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -193,5 +248,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnDraw;
         private System.Windows.Forms.Button btnClear;
+        private System.Windows.Forms.DataGridView tablePoints;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TrackBar tckSpeed;
+        private System.Windows.Forms.Label lblSpeed;
     }
 }

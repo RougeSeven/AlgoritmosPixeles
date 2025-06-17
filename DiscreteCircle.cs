@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
 using System.Windows.Forms;
 using System.Threading;
+using System.Data;
+using System.Reflection;
 
 namespace AlgoritmosPixeles
 {
@@ -16,12 +18,34 @@ namespace AlgoritmosPixeles
         private int radius;
         private Pen mPen;
         private Graphics mGraph;
+        private DataTable points;
+        private int delayFactor;
 
         public DiscreteCircle()
         {
             center = new Point();
             radius = 0;
             mPen=new Pen(Color.Black,2);
+            createPointsTable();
+            delayFactor = 0;
+        }
+        public void createPointsTable()
+        {
+            points = new DataTable();
+            points.Columns.Add("Pixel", typeof(int));
+            points.Columns.Add("Valor X", typeof(int));
+            points.Columns.Add("Valor Y", typeof(int));
+        }
+        public void getAnimationSpeed(System.Windows.Forms.TrackBar tckSpeed)
+        {
+            try
+            {
+                delayFactor = 1 + (5 * (tckSpeed.Maximum-tckSpeed.Value));
+            }
+            catch
+            {
+                MessageBox.Show("Valor fuera de límites");
+            }
         }
         public void readData(System.Windows.Forms.TextBox txtPx, System.Windows.Forms.TextBox txtPy, System.Windows.Forms.TextBox txtRadius)
         {
@@ -37,7 +61,7 @@ namespace AlgoritmosPixeles
             }
         }
 
-        public void initializeData(System.Windows.Forms.TextBox txtPx, System.Windows.Forms.TextBox txtPy, System.Windows.Forms.TextBox txtRadius, PictureBox picCanvas)
+        public void initializeData(System.Windows.Forms.TextBox txtPx, System.Windows.Forms.TextBox txtPy, System.Windows.Forms.TextBox txtRadius, PictureBox picCanvas, DataGridView pointsTable)
         {
             txtPx.Text = "";
             txtPy.Text = "";
@@ -45,6 +69,13 @@ namespace AlgoritmosPixeles
             picCanvas.Refresh();
             center = new Point();
             radius = 0;
+            points.Rows.Clear();
+            pointsTable.DataSource = points;
+            delayFactor = 0;
+            foreach (DataGridViewColumn col in pointsTable.Columns)
+            {
+                col.Width = pointsTable.Width / 3;
+            }
         }
         public void calculate()
         {
@@ -58,7 +89,7 @@ namespace AlgoritmosPixeles
                 k = Convert.ToInt32(Math.Round((double)radius/2));
             }
         }
-        public void calculateOctant(PictureBox picCanvas)
+        public void calculateOctant(PictureBox picCanvas, DataGridView pointsTable)
         {
             int x = 0;
             int y = radius;
@@ -102,21 +133,21 @@ namespace AlgoritmosPixeles
                 i++;
                 octant[i]=pointf;
             }
-            plotCircle(picCanvas, octant);
+            plotCircle(picCanvas, octant, pointsTable);
         }
-        public void plotCircle(PictureBox picCanvas, Point[] octant)
+        public void plotCircle(PictureBox picCanvas, Point[] octant, DataGridView pointsTable)
         {
             SolidBrush mBrush = new SolidBrush(Color.Black);
-           mGraph=picCanvas.CreateGraphics();
+            mGraph = picCanvas.CreateGraphics();
             picCanvas.Refresh();
-            Point[] factors= new Point[octant.Length];
+            Point[] factors = new Point[octant.Length];
             for (int i = 0; i < octant.Length; i++)
             {
                 factors[i] = new Point(octant[i].X - center.X, octant[i].Y - center.Y);
             }
 
 
-            Point[] octant2=new Point[octant.Length];
+            Point[] octant2 = new Point[octant.Length];
             Point[] octant3 = new Point[octant.Length];
             Point[] octant4 = new Point[octant.Length];
             Point[] octant5 = new Point[octant.Length];
@@ -125,7 +156,7 @@ namespace AlgoritmosPixeles
             Point[] octant8 = new Point[octant.Length];
 
             for (int i = 0; i < octant.Length; i++)
-            { 
+            {
                 octant2[i] = new Point(center.X + factors[i].Y, center.Y + factors[i].X);
                 octant3[i] = new Point(center.X + factors[i].Y, center.Y - factors[i].X);
                 octant4[i] = new Point(center.X + factors[i].X, center.Y - factors[i].Y);
@@ -134,18 +165,26 @@ namespace AlgoritmosPixeles
                 octant7[i] = new Point(center.X - factors[i].Y, center.Y + factors[i].X);
                 octant8[i] = new Point(center.X - factors[i].X, center.Y + factors[i].Y);
             }
+            Point[][] circulo= {
+                   octant4, octant3, octant2, octant, octant8, octant7, octant6, octant5
+            };
 
-            for (int i=0;i<octant.Length;i++)
+            for (int i=0;i<8;i++)
             {
-                mGraph.FillRectangle(mBrush, octant[i].X, octant[i].Y,1,1);
-                mGraph.FillRectangle(mBrush, octant2[i].X, octant2[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant3[i].X, octant3[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant4[i].X, octant4[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant5[i].X, octant5[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant6[i].X, octant6[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant7[i].X, octant7[i].Y, 1, 1);
-                mGraph.FillRectangle(mBrush, octant8[i].X, octant8[i].Y, 1, 1);
-
+                for(int j = 0; j < octant.Length; j++)
+                {
+                    mGraph.FillRectangle(mBrush, circulo[i][j].X, circulo[i][j].Y, 1, 1);
+                    Thread.Sleep(delayFactor);
+                    points.Rows.Add(((8*i)+j), circulo[i][j].X, circulo[i][j].Y);
+                    if (pointsTable.InvokeRequired)
+                    {
+                        pointsTable.Invoke((MethodInvoker)(() =>
+                        {
+                            pointsTable.Refresh();
+                            pointsTable.FirstDisplayedScrollingRowIndex = pointsTable.Rows.Count - 1;
+                        }));
+                    }
+                }
             }
         }
 

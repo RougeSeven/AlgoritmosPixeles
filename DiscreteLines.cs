@@ -20,7 +20,9 @@ namespace AlgoritmosPixeles
         private float slope;
         private const int sf = 10;
         private DataTable points;
-
+        private int delayFactor;
+        private Pen mPen;
+        private Graphics mGraph;
 
         public DiscreteLines()
         {
@@ -32,13 +34,23 @@ namespace AlgoritmosPixeles
             k = 0;
             createPointsTable();
         }
-
+        public void getAnimationSpeed(TrackBar tckSpeed)
+        {
+            try
+            {
+                delayFactor = 1 + (5 * (tckSpeed.Maximum - tckSpeed.Value));
+            }
+            catch
+            {
+                MessageBox.Show("Valor fuera de límites");
+            }
+        }
         public void createPointsTable()
         {
             points = new DataTable();
-            points.Columns.Add("step", typeof(int));
-            points.Columns.Add("valueX", typeof(int));
-            points.Columns.Add("valueY", typeof(int));
+            points.Columns.Add("Pixel", typeof(int));
+            points.Columns.Add("Valor X", typeof(int));
+            points.Columns.Add("Valor Y", typeof(int));
         }
 
         public void readData(System.Windows.Forms.TextBox txtPx1, System.Windows.Forms.TextBox txtPy1, System.Windows.Forms.TextBox txtPx2, System.Windows.Forms.TextBox txtPy2, PictureBox picCanvas)
@@ -91,8 +103,6 @@ namespace AlgoritmosPixeles
         }
         public void drawEnds(PictureBox picCanvas)
         {
-            Pen mPen;
-            Graphics mGraph;
             mPen = new Pen(Color.Red, 2);
             mGraph = picCanvas.CreateGraphics();
             int radius = 5;
@@ -102,8 +112,7 @@ namespace AlgoritmosPixeles
 
         public void drawDiscrete(PictureBox picCanvas, DataGridView pointsTable)
         {
-            Pen mPen;
-            Graphics mGraph;
+            points.Rows.Clear();
             mPen = new Pen(Color.Black, 2);
             mGraph = picCanvas.CreateGraphics();
             Point pointi = new Point();
@@ -126,12 +135,18 @@ namespace AlgoritmosPixeles
                     pointf.Y = pointi.Y + 1;
                     pointf.X = Convert.ToInt32(Math.Round(coordenate_k));
                 }
-                points.Rows.Add(i, pointf.X, pointf.Y);
                 mGraph.DrawLine(mPen, pointi, pointf);
+                points.Rows.Add(i, pointf.X, pointf.Y);
+                Thread.Sleep(delayFactor);
                 pointi = pointf;
-                pointsTable.Refresh();
-                pointsTable.FirstDisplayedScrollingRowIndex = pointsTable.Rows.Count - 1;
-                Thread.Sleep(10);
+                if (pointsTable.InvokeRequired)
+                {
+                    pointsTable.Invoke((MethodInvoker)(() =>
+                    {
+                        pointsTable.Refresh();
+                        pointsTable.FirstDisplayedScrollingRowIndex = pointsTable.Rows.Count - 1;
+                    }));
+                }
             }
         }
     }

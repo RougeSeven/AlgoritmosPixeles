@@ -25,6 +25,7 @@ namespace AlgoritmosPixeles
         }
         private void DiscreteLinePlot(object sender, EventArgs e)
         {
+            dLines.getAnimationSpeed(tckSpeed);
             dLines.readData(txtPx1, txtPy1, txtPx2, txtPy2, picCanvas);
             dLines.calculateDiscrete();
             dLines.drawEnds(picCanvas);
@@ -32,6 +33,7 @@ namespace AlgoritmosPixeles
         }
         private void BresenhamLinePlot(object sender, EventArgs e)
         {
+            bresLines.getAnimationSpeed(tckSpeed);
             bresLines.readData(txtPx1, txtPy1, txtPx2, txtPy2);
             bresLines.calculate();
             bresLines.drawEnds(picCanvas);
@@ -46,6 +48,14 @@ namespace AlgoritmosPixeles
         {
             dLines.initializeData(txtPx1, txtPy1, txtPx2, txtPy2, picCanvas,tablePoints);
             bresLines.initializeData(txtPx1, txtPy1, txtPx2, txtPy2, picCanvas, tablePoints);
+            lblSpeed.Text = "x" + tckSpeed.Value.ToString();
+        }
+
+        private void tckSpeed_Scroll(object sender, EventArgs e)
+        {
+            lblSpeed.Text = "x" + tckSpeed.Value.ToString();
+            dLines.getAnimationSpeed(tckSpeed);
+            bresLines.getAnimationSpeed(tckSpeed);
         }
     }
 }

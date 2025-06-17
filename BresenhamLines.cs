@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -22,6 +24,7 @@ namespace AlgoritmosPixeles
         private int const_sub;
         private float slope;
         private const int sf= 20;
+        private int delayFactor;
         DataTable points;
 
 
@@ -36,15 +39,26 @@ namespace AlgoritmosPixeles
             p = 0;
             const_add = 0;
             const_sub = 0;
+            delayFactor = 0;
             createPointsTable();
         }
-
+        public void getAnimationSpeed(System.Windows.Forms.TrackBar tckSpeed)
+        {
+            try
+            {
+                delayFactor = 1 + (5 * (tckSpeed.Maximum - tckSpeed.Value));
+            }
+            catch
+            {
+                MessageBox.Show("Valor fuera de límites");
+            }
+        }
         public void createPointsTable()
         {
             points = new DataTable();
-            points.Columns.Add("step", typeof(int));
-            points.Columns.Add("valueX", typeof(int));
-            points.Columns.Add("valueY", typeof(int));
+            points.Columns.Add("Pixel", typeof(int));
+            points.Columns.Add("Valor X", typeof(int));
+            points.Columns.Add("Valor Y", typeof(int));
         }
 
         public void readData(System.Windows.Forms.TextBox txtPx1, System.Windows.Forms.TextBox txtPy1, System.Windows.Forms.TextBox txtPx2, System.Windows.Forms.TextBox txtPy2)
@@ -80,7 +94,12 @@ namespace AlgoritmosPixeles
             const_add = 0;
             const_sub = 0;
             points.Rows.Clear();
+            delayFactor = 0;
             pointsTable.DataSource = points;
+            foreach (DataGridViewColumn col in pointsTable.Columns)
+            {
+                col.Width = pointsTable.Width / 3;
+            }
         }
         public void calculate()
         {
@@ -105,6 +124,7 @@ namespace AlgoritmosPixeles
         }
         public void drawPoints(PictureBox picCanvas, DataGridView pointsTable)
         {
+            points.Rows.Clear();
             Point point = new Point();
             Pen mPen;
             mPen = new Pen(Color.Black, 2);
@@ -118,6 +138,7 @@ namespace AlgoritmosPixeles
             Point pointi = p_0;
             points.Rows.Add(0, pointi.X, pointi.Y);
             Point pointf=new Point();
+            pointsTable.DataSource = points;
             for (int i=0;i<k;i++)
             {
                 if(p_k <0)
@@ -142,11 +163,19 @@ namespace AlgoritmosPixeles
 
                 }
                 mGraph.DrawLine(mPen, pointi, pointf);
+                Thread.Sleep(delayFactor);
                 //Agregando a la tabla
-                points.Rows.Add(i+1,pointf.X,pointf.Y);
                 pointi = pointf;
+                points.Rows.Add(i + 1, pointf.X, pointf.Y);
+                if (pointsTable.InvokeRequired)
+                {
+                    pointsTable.Invoke((MethodInvoker)(() =>
+                    {
+                        pointsTable.Refresh();
+                        pointsTable.FirstDisplayedScrollingRowIndex = pointsTable.Rows.Count - 1;
+                    }));
+                }
             }
-            pointsTable.DataSource = points;
         }
         public void drawEnds(PictureBox picCanvas)
         {
