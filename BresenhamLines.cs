@@ -133,7 +133,6 @@ namespace AlgoritmosPixeles
             //Extremos
             mPen = new Pen(Color.Black, 3);
             mGraph.DrawLine(mPen, point, point);
-            mGraph.DrawLine(mPen, point, point);
             int p_k = p;
             Point pointi = p_0;
             points.Rows.Add(0, pointi.X, pointi.Y);
